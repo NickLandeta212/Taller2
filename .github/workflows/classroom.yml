@@ -1,0 +1,131 @@
+name: Autograding POO Ciberseguridad ArrayList
+
+on:
+  push:
+  repository_dispatch:
+
+permissions:
+  checks: write
+  contents: read
+  actions: read
+
+jobs:
+  run-autograding-tests:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-classroom[bot]'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: maven
+
+      - name: Requisito 1 - Constructor getters y setters
+        id: constructor-getters-setters
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: Requisito 1 - Constructor getters y setters
+          setup-command: ""
+          command: mvn -q -Dtest=ActivoDigitalConstructorTest test
+          timeout: 10
+          max-score: 1
+
+      - name: Requisito 2 - Herencia Servidor
+        id: herencia-servidor
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: Requisito 2 - Herencia Servidor
+          setup-command: ""
+          command: mvn -q -Dtest=ServidorHerenciaTest test
+          timeout: 10
+          max-score: 1
+
+      - name: Requisito 3 - Herencia Firewall
+        id: herencia-firewall
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: Requisito 3 - Herencia Firewall
+          setup-command: ""
+          command: mvn -q -Dtest=FirewallHerenciaTest test
+          timeout: 10
+          max-score: 1
+
+      - name: Requisito 4 - Uso de ArrayList
+        id: uso-arraylist
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: Requisito 4 - Uso de ArrayList
+          setup-command: ""
+          command: mvn -q -Dtest=ArrayListUsoTest test
+          timeout: 10
+          max-score: 1.5
+
+      - name: Requisito 5 - Registrar activos
+        id: registrar-activos
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: Requisito 5 - Registrar activos
+          setup-command: ""
+          command: mvn -q -Dtest=RegistrarActivoTest test
+          timeout: 10
+          max-score: 1.5
+
+      - name: Requisito 6 - Buscar por codigo
+        id: buscar-codigo
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: Requisito 6 - Buscar por codigo
+          setup-command: ""
+          command: mvn -q -Dtest=BuscarPorCodigoTest test
+          timeout: 10
+          max-score: 1
+
+      - name: Requisito 7 - Contar activos criticos
+        id: contar-criticos
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: Requisito 7 - Contar activos criticos
+          setup-command: ""
+          command: mvn -q -Dtest=ContarActivosCriticosTest test
+          timeout: 10
+          max-score: 1
+
+      - name: Requisito 8 - Promedio de riesgo
+        id: promedio-riesgo
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: Requisito 8 - Promedio de riesgo
+          setup-command: ""
+          command: mvn -q -Dtest=PromedioRiesgoTest test
+          timeout: 10
+          max-score: 1
+
+      - name: Requisito 9 - Aplicar parche y reiniciar
+        id: aplicar-parche-reiniciar
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: Requisito 9 - Aplicar parche y reiniciar
+          setup-command: ""
+          command: mvn -q -Dtest=AplicarParcheYReiniciarTest test
+          timeout: 10
+          max-score: 1
+
+      - name: Autograding Reporter
+        uses: classroom-resources/autograding-grading-reporter@v1
+        env:
+          CONSTRUCTOR-GETTERS-SETTERS_RESULTS: "${{steps.constructor-getters-setters.outputs.result}}"
+          HERENCIA-SERVIDOR_RESULTS: "${{steps.herencia-servidor.outputs.result}}"
+          HERENCIA-FIREWALL_RESULTS: "${{steps.herencia-firewall.outputs.result}}"
+          USO-ARRAYLIST_RESULTS: "${{steps.uso-arraylist.outputs.result}}"
+          REGISTRAR-ACTIVOS_RESULTS: "${{steps.registrar-activos.outputs.result}}"
+          BUSCAR-CODIGO_RESULTS: "${{steps.buscar-codigo.outputs.result}}"
+          CONTAR-CRITICOS_RESULTS: "${{steps.contar-criticos.outputs.result}}"
+          PROMEDIO-RIESGO_RESULTS: "${{steps.promedio-riesgo.outputs.result}}"
+          APLICAR-PARCHE-REINICIAR_RESULTS: "${{steps.aplicar-parche-reiniciar.outputs.result}}"
+        with:
+          runners: constructor-getters-setters,herencia-servidor,herencia-firewall,uso-arraylist,registrar-activos,buscar-codigo,contar-criticos,promedio-riesgo,aplicar-parche-reiniciar
