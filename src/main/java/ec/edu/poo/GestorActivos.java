@@ -28,7 +28,7 @@ public class GestorActivos {
 
         return null;
     }
-
+    
     public int contarActivosCriticos() {
         int contador = 0;
 
